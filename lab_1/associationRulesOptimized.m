@@ -109,6 +109,9 @@ for k = 2:numel(frequentItems)
                 % is a subset of what is already in the lowConfList
                 for x = 1:size(lowConfList)
                     isSubsetOf = all(ismember(antecendentlist(l,:), lowConfList{x}));
+                    if isSubsetOf
+                       break; 
+                    end
                 end
                 if isSubsetOf == false
                     confidence = support{k}(j)*ntrans/sum(all(dataset(:,antecendentlist(l,:)),2));
