@@ -6,7 +6,7 @@ histogram(cat);
 set(gca,'TickLength',[0 0])
 set(gca, 'FontSize', 8)
 xlabel('items names') 
-ylabel('frenquency') 
+ylabel('frequency') 
 title('Histogram showing the frequency of the shoppingList items') 
 end
 

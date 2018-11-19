@@ -110,29 +110,30 @@ for k = 2:numel(frequentItems)
                 for x = 1:size(lowConfList)
                     isSubsetOf = all(ismember(antecendentlist(l,:), lowConfList{x}));
                     if isSubsetOf
-                       break; 
+                       break;
                     end
                 end
-                if isSubsetOf == false
-                    confidence = support{k}(j)*ntrans/sum(all(dataset(:,antecendentlist(l,:)),2));
-                    if confidence >= minconf
-                        sup(end+1) = support{k}(j);
-                        conf(end+1) = confidence;
-                        antecedentstr = '';
-                        for m = 1:size(antecendentlist,2)
-                            antecedentstr = [antecedentstr,trlbl{antecendentlist(l,m)},','];
-                        end
-                        consequencestr = '';
-                        for m = 1:numel(consequence)
-                            consequencestr = [consequencestr,trlbl{frequentItems{k}(j,consequence(m))},','];
-                        end
-                        AR{end+1} = [antecedentstr(1:end-1),' -> ',consequencestr(1:end-1),sprintf(' [%2.2f,%2.2f]',sup(end),conf(end))];
-                    else
-                        % Improvement: if confidence is not high enough, store
-                        % it in the lowConfList to keep track of antecendents
-                        % that do not have high enough confidence
-                        lowConfList{end+1} = antecendentlist(l,:);
+                if isSubsetOf
+                    break;
+                end
+                confidence = support{k}(j)*ntrans/sum(all(dataset(:,antecendentlist(l,:)),2));
+                if confidence >= minconf
+                    sup(end+1) = support{k}(j);
+                    conf(end+1) = confidence;
+                    antecedentstr = '';
+                    for m = 1:size(antecendentlist,2)
+                        antecedentstr = [antecedentstr,trlbl{antecendentlist(l,m)},','];
                     end
+                    consequencestr = '';
+                    for m = 1:numel(consequence)
+                        consequencestr = [consequencestr,trlbl{frequentItems{k}(j,consequence(m))},','];
+                    end
+                    AR{end+1} = [antecedentstr(1:end-1),' -> ',consequencestr(1:end-1),sprintf(' [%2.2f,%2.2f]',sup(end),conf(end))];
+                else
+                    % Improvement: if confidence is not high enough, store
+                    % it in the lowConfList to keep track of antecendents
+                    % that do not have high enough confidence
+                    lowConfList{end+1} = antecendentlist(l,:);
                 end
             end
         end        
