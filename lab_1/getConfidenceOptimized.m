@@ -23,16 +23,15 @@ for k = 2:numel(frequentItems)
                 % Improvement: check if our current antecedentlist member
                 % is a subset of what is already in the lowConfList
                 for x = 1:size(lowConfList)
-                    isSubsetOf = all(ismember(lowConfList{x}, consequence));
+%                     isSubsetOf = all(ismember(antecendentlist(l,:), lowConfList{x}{1})) && all(ismember(lowConfList{x}{2}, consequence));
+%                     isSubsetOf = all(ismember(consequence, lowConfList{x}));
+                    isSubsetOf = all(ismember(antecendentlist(l,:), lowConfList{x}));
                     if isSubsetOf
-%                         disp(consequence);
-%                         disp(lowConfList{x});
-%                         disp(antecendentlist);
                        break;
                     end
                 end
                 if isSubsetOf
-                    break;
+                    continue;
                 end
                 confidence = support{k}(j)*ntrans/sum(all(dataset(:,antecendentlist(l,:)),2));
                 if confidence >= minconf
@@ -51,7 +50,9 @@ for k = 2:numel(frequentItems)
                     % Improvement: if confidence is not high enough, store
                     % it in the lowConfList to keep track of antecendents
                     % that do not have high enough confidence
-                    lowConfList{end+1} = consequence;
+%                     lowConfList{end+1} = {antecendentlist(l,:), consequence};
+%                     lowConfList{end+1} = consequence;
+                    lowConfList{end+1} = antecendentlist(l,:);
                 end
             end
         end        

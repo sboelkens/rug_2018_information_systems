@@ -4,13 +4,6 @@
 % Date: November 2018
 function [AR,confidence,support] = associationRules(minsup,minconf)
 
-if nargin == 0
-    minsup = 0.001;
-    minconf = 0.8;
-elseif nargin == 1
-    minconf = 0.8;
-end
-
 shoppingList = readDataFile;
 % shoppingList = {
 %     {'Bread', 'Milk'};
@@ -125,11 +118,7 @@ end
 % Sort the association rules by confidence and support
 confidence = round(conf * 10000) / 10000;
 support = round(sup * 10000) / 10000;
-if(isempty(confidence))
-   AR = "No association rules found that support the minimum confidence"; 
-else
-   [~,srtidx] = sortrows([confidence',support'],[-1,-2]);
-    confidence = confidence(srtidx);
-    support = support(srtidx);
-    AR = AR(srtidx); 
-end
+[~,srtidx] = sortrows([confidence',support'],[-1,-2]);
+confidence = confidence(srtidx);
+support = support(srtidx);
+AR = AR(srtidx);
