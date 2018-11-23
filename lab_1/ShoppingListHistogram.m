@@ -1,4 +1,4 @@
-function ShoppingListHistogram
+function shoppingListHistogram
 shoppingList = readDataFile;
 cat = categorical([shoppingList{:}]);
 histogram(cat);
