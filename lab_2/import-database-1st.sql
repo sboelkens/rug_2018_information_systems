@@ -1,7 +1,5 @@
 -- Adminer 4.6.3 PostgreSQL dump
 
-\connect "gill_art_1st_normal_form";
-
 DROP TABLE IF EXISTS "customer";
 CREATE TABLE "public"."customer" (
     "custno" integer NOT NULL,

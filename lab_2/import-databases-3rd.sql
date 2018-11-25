@@ -1,14 +1,4 @@
 
-DROP TABLE IF EXISTS "art";
-DROP SEQUENCE IF EXISTS art_art_code_seq;
-CREATE SEQUENCE art_art_code_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;
-
-CREATE TABLE "public"."art" (
-    "art_code" integer DEFAULT nextval('art_art_code_seq') NOT NULL,
-    "art_title" text NOT NULL,
-    "artist_id" integer NOT NULL,
-    CONSTRAINT "art_artist_id_fkey" FOREIGN KEY (artist_id) REFERENCES artist(artist_id) NOT DEFERRABLE
-) WITH (oids = false);
 
 
 DROP TABLE IF EXISTS "artist";
@@ -20,6 +10,18 @@ CREATE TABLE "public"."artist" (
     "artist_name" text NOT NULL,
     CONSTRAINT "artist_artist_id" PRIMARY KEY ("artist_id")
 ) WITH (oids = false);
+
+DROP TABLE IF EXISTS "art";
+DROP SEQUENCE IF EXISTS art_art_code_seq;
+CREATE SEQUENCE art_art_code_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;
+
+CREATE TABLE "public"."art" (
+    "art_code" integer DEFAULT nextval('art_art_code_seq') NOT NULL,
+    "art_title" text NOT NULL,
+    "artist_id" integer NOT NULL,
+    CONSTRAINT "art_artist_id_fkey" FOREIGN KEY (artist_id) REFERENCES artist(artist_id) NOT DEFERRABLE
+) WITH (oids = false);
+
 
 
 DROP TABLE IF EXISTS "customer";

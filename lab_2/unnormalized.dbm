@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.8.1" last-position="0,7" last-zoom="1"
+	 default-schema="public" default-owner="postgres">
+<database name="unormalized" encoding="UTF8" lc-collate="en_US" lc-ctype="en_US">
+	<role name="postgres"/>
+	<tablespace name="pg_default"/>
+</database>
+
+<schema name="public" protected="true" rect-visible="true" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="customer">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="149" y="57"/>
+	<column name="custno" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="cust_name" not-null="true">
+		<type name="text"/>
+	</column>
+	<column name="cust_addr" not-null="true">
+		<type name="text"/>
+	</column>
+	<column name="cust_phone" not-null="true">
+		<type name="text"/>
+	</column>
+	<column name="artist_id" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="artist_name" not-null="true">
+		<type name="text"/>
+	</column>
+	<column name="art_code" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="art_title" not-null="true">
+		<type name="text"/>
+	</column>
+	<column name="pur_date" not-null="true">
+		<type name="date"/>
+	</column>
+	<column name="price" not-null="true">
+		<type name="integer"/>
+	</column>
+</table>
+
+</dbmodel>
