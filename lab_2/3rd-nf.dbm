@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.0-beta" last-position="0,0" last-zoom="1"
+	 default-schema="public" default-owner="postgres">
+<role name="homestead"
+      superuser="true"
+      createdb="true"
+      inherit="true"
+      login="true"
+      encrypted="true"
+      password="********">
+</role>
+
+<database name="gil_art_3rd_nf" encoding="UTF8" lc-collate="en_US.UTF-8" lc-ctype="en_US.UTF-8">
+	<role name="homestead"/>
+	<tablespace name="pg_default"/>
+</database>
+
+<schema name="public" rect-visible="true" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<sequence name="artist_artist_id_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="public"/>
+	<role name="homestead"/>
+</sequence>
+
+<table name="artist">
+	<schema name="public"/>
+	<role name="homestead"/>
+	<position x="580" y="420"/>
+	<column name="artist_id" not-null="true" sequence="public.artist_artist_id_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="artist_name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="artist_artist_id" type="pk-constr" table="public.artist">
+		<columns names="artist_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="art_art_code_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="public"/>
+	<role name="homestead"/>
+</sequence>
+
+<table name="art">
+	<schema name="public"/>
+	<role name="homestead"/>
+	<position x="200" y="380"/>
+	<column name="art_code" not-null="true" sequence="public.art_art_code_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="art_title" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="artist_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="art_pk" type="pk-constr" table="public.art">
+		<columns names="art_code" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="customer">
+	<schema name="public"/>
+	<role name="homestead"/>
+	<position x="220" y="60"/>
+	<column name="custno" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="cust_name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="cust_addr" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="cust_phone" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="customer_custno" type="pk-constr" table="public.customer">
+		<columns names="custno" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="purchase">
+	<schema name="public"/>
+	<role name="homestead"/>
+	<position x="600" y="200"/>
+	<column name="cust_no" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="art_code" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="pur_date" not-null="true">
+		<type name="date" length="0"/>
+	</column>
+	<column name="price" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="purchase_pkey" type="pk-constr" table="public.purchase">
+		<columns names="cust_no,art_code,pur_date" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<function name="uppercase_cust_name_on_insert"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="homestead"/>
+	<language name="plpgsql" sql-disabled="true"/>
+	<return-type>
+	<type name="trigger" length="1"/>
+	</return-type>
+	<definition><![CDATA[
+    BEGIN        
+        NEW.cust_name = UPPER(NEW.cust_name);
+        RETURN NEW;
+    END;
+]]></definition>
+</function>
+
+<trigger name="uppercase_cust_name_on_insert" firing-type="BEFORE" per-line="true" constraint="false"
+	 ins-event="true" del-event="false" upd-event="true" trunc-event="false"
+	 table="public.customer">
+		<function signature="public.uppercase_cust_name_on_insert()"/>
+</trigger>
+
+<function name="uppercase_artist_name_on_insert"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="homestead"/>
+	<language name="plpgsql" sql-disabled="true"/>
+	<return-type>
+	<type name="trigger" length="1"/>
+	</return-type>
+	<definition><![CDATA[
+    BEGIN        
+        NEW.artist_name = UPPER(NEW.artist_name);
+        RETURN NEW;
+    END;
+]]></definition>
+</function>
+
+<trigger name="uppercase_artist_name_on_insert_trigger" firing-type="BEFORE" per-line="true" constraint="false"
+	 ins-event="true" del-event="false" upd-event="true" trunc-event="false"
+	 table="public.artist">
+		<function signature="public.uppercase_artist_name_on_insert()"/>
+</trigger>
+
+<function name="validate_price_on_insert"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="homestead"/>
+	<language name="plpgsql" sql-disabled="true"/>
+	<return-type>
+	<type name="trigger" length="1"/>
+	</return-type>
+	<definition><![CDATA[
+    BEGIN
+        IF NEW.price = 0 THEN
+            RAISE EXCEPTION 'The price should not be %', NEW.price;
+        END IF;
+        RETURN NEW;
+    END;
+]]></definition>
+</function>
+
+<trigger name="validate_price_on_insert_trigger" firing-type="BEFORE" per-line="true" constraint="false"
+	 ins-event="true" del-event="false" upd-event="true" trunc-event="false"
+	 table="public.purchase">
+		<function signature="public.validate_price_on_insert()"/>
+</trigger>
+
+<constraint name="art_artist_id_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.artist" table="public.art">
+	<columns names="artist_id" ref-type="src-columns"/>
+	<columns names="artist_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="purchase_cust_no_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.customer" table="public.purchase">
+	<columns names="cust_no" ref-type="src-columns"/>
+	<columns names="custno" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="purchase_art_code_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.art" table="public.purchase">
+	<columns names="art_code" ref-type="src-columns"/>
+	<columns names="art_code" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_art_artist" type="relfk"
+	 custom-color="#83af1f"
+	 src-table="public.art"
+	 dst-table="public.artist"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_purchase_customer" type="relfk"
+	 custom-color="#9ac721"
+	 src-table="public.purchase"
+	 dst-table="public.customer"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_purchase_art" type="relfk"
+	 src-table="public.purchase"
+	 dst-table="public.art"
+	 src-required="false" dst-required="false"/>
+
+</dbmodel>
