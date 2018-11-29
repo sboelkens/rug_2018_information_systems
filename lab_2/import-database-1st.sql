@@ -1,4 +1,3 @@
--- Adminer 4.6.3 PostgreSQL dump
 
 DROP TABLE IF EXISTS "customer";
 CREATE TABLE "public"."customer" (
