@@ -194,8 +194,18 @@ class KDTree:
 		return boxes
 		
 	def closest(self, point, sidx = si.StorageIndex()):
-		# :To be implemented by the student:
-		pass				
+		if "elements" in self.storage[sidx.storage()]:
+			return self.storage[sidx.storage()]["elements"]
+
+		axis = self.storage[sidx.storage()]["axis"]
+		partition = self.storage[sidx.storage()]["partition"]
+
+		x = point[0] if axis == 0 else point[1]
+
+		if x <= partition:
+			return self.closest(point, sidx.left())
+		else:
+			return self.closest(point, sidx.right())
 		
 
 	
