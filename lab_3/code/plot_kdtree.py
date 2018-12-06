@@ -76,11 +76,41 @@ if __name__ == '__main__':
 		plotter.add_closest_query(closest_query,geometries[ordered[0]])		
 
 	
-	# Using the QuadTree depth to subsample the KDTree		
-	if args.quadtree:
-	# :To be implemented by the student:
-		pass		
+	# Using the QuadTree depth to subsample the KDTree			
+    if args.quadtree:
 
+        # :To be implemented by the student:•
+        # initially set the quad field for all records to the max quad-level
+        # iterate through all levels of the quadtree in reverse order. (maxdepth to 0) for every box inside that level obtain its centroid.
+        # use this centroid to obtain the list of closest points inside the KDTree
+        # find the closest point inside that list
+        # update the ‘quad‘ field corresponding to that point to the current quadlevel
+        
+		quadlevel = args.quadlevel
+		#seting up the quadtree
+        quadtree = qt.QuadTree(tree.bounding_box(), args.quadtree)
+        tree_quads = quadtree.quads
+		#looping through the levels in reverse
+        for idx in range(len(tree_quads) - 1, -1, -1):
+            level_quads = tree_quads[idx]
+            for quad in level_quads:
+                centroid = quad.centroid()
+                closest_records = dtb.query(tree.closest(centroid))
+                #print("closest records",closest_records, "centroid ", centroid, "idx",idx)
+                minumum_dist = sys.maxsize
+                closest = None
+				#finding the closest point
+                for close in closest_records:
+                    distance = math.sqrt(((centroid[0] - close[1]) ** 2) + ((centroid[1] - close[2]) ** 2))
+                    if(distance< minumum_dist):
+                        minumum_dist = distance
+                        closest = close
+                if closest is not None:
+                    print("closest", closest)
+            		#updating the quad field of the closest point
+					dtb.update_field(closest[0], 'quad', idx)
+
+					
 	plotter.plot()
 
 
