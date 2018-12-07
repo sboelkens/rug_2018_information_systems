@@ -83,19 +83,12 @@ if __name__ == '__main__':
 
     # Using the QuadTree depth to subsample the KDTree
     if args.quadtree:
-        # :To be implemented by the student:•
-        # initially set the quad field for all records to the max quad-level
-        # iterate through all levels of the quadtree in reverse order. (maxdepth to 0) for every box inside that level obtain its centroid.
-        # use this centroid to obtain the list of closest points inside the KDTree
-        # find the closest point inside that list
-        # update the ‘quad‘ field corresponding to that point to the current quadlevel
 
         quadlevel = args.quadlevel
 
         for record in dtb.query(dtb.keys()):
             dtb.update_field(record[0], 'quad', args.quadtree)
 
-            # seting up the quadtree
         quadtree = qt.QuadTree(tree.bounding_box(), args.quadtree)
         tree_quads = quadtree.quads
 
@@ -105,18 +98,16 @@ if __name__ == '__main__':
             for quad in level_quads:
                 centroid = quad.centroid()
                 closest_records = dtb.query(tree.closest(centroid))
-                minumum_dist = sys.maxsize
-                closest = None
+                min_dist = sys.maxsize
                 # finding the closest point
-                for close in closest_records:
+                closest = closest_records[0]
+                for close in closest_records[1:]:
                     distance = math.sqrt(((centroid[0] - close[1]) ** 2) + ((centroid[1] - close[2]) ** 2))
-                    if (distance < minumum_dist):
-                        minumum_dist = distance
+                    if(distance <  min_dist):
+                        min_dist = distance
                         closest = close
-                if closest is not None:
-                    print("closest", closest)
-                    # updating the quad field of the closest point
-                    dtb.update_field(closest[0], 'quad', idx)
+                # updating the quad field of the closest point
+                dtb.update_field(closest[0], 'quad', idx)
 
     plotter.plot()
 

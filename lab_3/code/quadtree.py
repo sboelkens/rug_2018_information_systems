@@ -62,6 +62,7 @@ class QuadTree:
 		cent_y = centroid[1]
 		max_x = bbox.lower_left()[0] + bbox.width()
 		max_y = bbox.lower_left()[1] + bbox.height()
+
 		box1 = bb.BoundingBox(min_x, cent_x, min_y, cent_y)
 		box2 = bb.BoundingBox(cent_x, max_x, min_y, cent_y)
 		box3 = bb.BoundingBox(min_x, cent_x, cent_y, max_y)
