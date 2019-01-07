@@ -55,28 +55,22 @@ class QuadTree:
 			return
 
 		centroid = bbox.centroid()
-
 		min_x = bbox.lower_left()[0]
 		min_y = bbox.lower_left()[1]
-		cent_x = centroid[0]
-		cent_y = centroid[1]
 		max_x = bbox.lower_left()[0] + bbox.width()
 		max_y = bbox.lower_left()[1] + bbox.height()
 
-		box1 = bb.BoundingBox(min_x, cent_x, min_y, cent_y)
-		box2 = bb.BoundingBox(cent_x, max_x, min_y, cent_y)
-		box3 = bb.BoundingBox(min_x, cent_x, cent_y, max_y)
-		box4 = bb.BoundingBox(cent_x, max_x, cent_y, max_y)
+		matrix = [
+			[min_x, min_y],
+			[max_x, min_y],
+			[min_x, max_y],
+			[max_x, max_y]
+		]
 
-		self.quads[depth].append(box1)
-		self.quads[depth].append(box2)
-		self.quads[depth].append(box3)
-		self.quads[depth].append(box4)
-
-		self.recurse(box1, depth + 1)
-		self.recurse(box2, depth + 1)
-		self.recurse(box3, depth + 1)
-		self.recurse(box4, depth + 1)
+		for i in range(0,4):
+			box = bb.BoundingBox(centroid[0], matrix[i][0], centroid[1], matrix[i][1])
+			self.quads[depth].append(box)
+			self.recurse(box, depth + 1)
 
 	@staticmethod	
 	def at_least(size):
