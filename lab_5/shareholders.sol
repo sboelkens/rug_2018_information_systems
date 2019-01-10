@@ -1,6 +1,6 @@
 pragma solidity >=0.4.22 <0.6.0;
 
-contract shareholders{
+contract shareholdersVote{
 
     struct Answer{
       uint question_id;
@@ -18,7 +18,7 @@ contract shareholders{
 
     uint questionId = 1;
 
-    address[] voters;
+    address[] shareholders;
     Answer[] answers;
     Question[] questions;
 
@@ -60,21 +60,21 @@ contract shareholders{
     }
 
     function addVoter(address voterAddress) public {
-        require( owner == msg.sender, 'Only contract owner can add voters');
+        require( owner == msg.sender, 'Only contract owner can add shareholders');
         require( voterAddress != msg.sender, 'You cannot add yourself as a voter');
-        for(uint i = 0 ; i< voters.length; i++){
-            require( voters[i] != voterAddress, 'Voter already exists');
+        for(uint i = 0 ; i< shareholders.length; i++){
+            require( shareholders[i] != voterAddress, 'Voter already exists');
         }
-        voters.push(voterAddress);
+        shareholders.push(voterAddress);
     }
 
 
     function removeVoter(address voter_address) public{
-		require( owner == msg.sender, 'Only contract owner can remove voters');
+		require( owner == msg.sender, 'Only contract owner can remove shareholders');
 
-        for (uint i = 0; i<voters.length; i++){
-			if(voters[i] == voter_address){
-				delete voters[i];
+        for (uint i = 0; i<shareholders.length; i++){
+			if(shareholders[i] == voter_address){
+				delete shareholders[i];
 				break;
 			}
         }
@@ -104,7 +104,7 @@ contract shareholders{
             }
             if(!answered){
                 string memory que = questions[i].question;
-                questionsString = string(abi.encodePacked(questionsString, ", ",que));
+                questionsString = string(abi.encodePacked(questionsString,", question_id =", questions[i].id, " question=",que));
             }
         }
         return questionsString;
@@ -131,6 +131,20 @@ contract shareholders{
 
 
     function getVoteResult(uint question_id) public view returns(string memory result){
+		bool canView = false;
+		if(msg.sender == owner){
+			canView = true;
+		}else{
+			for(uint i =0; i < shareholders.length; i++){
+				if(msg.sender == shareholders[i]){
+					canView = true;
+					break;
+				}
+			}
+		}
+		if(!canView){
+			return "You do not have permission to view the result of this question" ;
+		}
 
         for(uint i = 0; i< questions.length; i++){
           if(questions[i].id == question_id){
